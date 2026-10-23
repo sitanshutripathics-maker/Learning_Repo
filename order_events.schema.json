@@ -1,0 +1,32 @@
+{
+  "schemaName": "order_events",
+  "dimensionFieldSpecs": [
+    { "name": "event_id", "dataType": "STRING" },
+    { "name": "order_id", "dataType": "STRING" },
+    { "name": "user_id", "dataType": "STRING" },
+    { "name": "product_id", "dataType": "STRING" },
+    { "name": "product_name", "dataType": "STRING" },
+    { "name": "category", "dataType": "STRING" },
+    { "name": "status", "dataType": "STRING" },
+    { "name": "payment_method", "dataType": "STRING" },
+    { "name": "city", "dataType": "STRING" }
+  ],
+  "metricFieldSpecs": [
+    { "name": "quantity", "dataType": "INT" },
+    { "name": "amount", "dataType": "DOUBLE" }
+  ],
+  "dateTimeFieldSpecs": [
+    {
+      "name": "event_time",
+      "dataType": "LONG",
+      "format": "1:MILLISECONDS:EPOCH",
+      "granularity": "1:MILLISECONDS"
+    },
+    {
+      "name": "processed_time",
+      "dataType": "LONG",
+      "format": "1:MILLISECONDS:EPOCH",
+      "granularity": "1:MILLISECONDS"
+    }
+  ]
+}

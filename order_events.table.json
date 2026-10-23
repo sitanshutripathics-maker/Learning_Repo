@@ -1,0 +1,46 @@
+{
+  "tableName": "order_events",
+  "tableType": "REALTIME",
+  "segmentsConfig": {
+    "timeColumnName": "event_time",
+    "schemaName": "order_events",
+    "replication": "1",
+    "retentionTimeUnit": "DAYS",
+    "retentionTimeValue": "7"
+  },
+  "tenants": {
+    "broker": "DefaultTenant",
+    "server": "DefaultTenant"
+  },
+  "tableIndexConfig": {
+    "loadMode": "MMAP",
+    "invertedIndexColumns": ["status", "category", "city", "payment_method"],
+    "rangeIndexColumns": ["amount"],
+    "bloomFilterColumns": ["order_id", "user_id"],
+    "starTreeIndexConfigs": [
+      {
+        "dimensionsSplitOrder": ["status", "category", "city", "payment_method"],
+        "functionColumnPairs": ["COUNT__*", "SUM__amount", "SUM__quantity"],
+        "maxLeafRecords": 10000
+      }
+    ]
+  },
+  "ingestionConfig": {
+    "streamIngestionConfig": {
+      "streamConfigMaps": [
+        {
+          "streamType": "kafka",
+          "stream.kafka.topic.name": "orders.enriched",
+          "stream.kafka.broker.list": "kafka:9092",
+          "stream.kafka.consumer.type": "lowlevel",
+          "stream.kafka.consumer.prop.auto.offset.reset": "smallest",
+          "stream.kafka.consumer.factory.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaConsumerFactory",
+          "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.stream.kafka.KafkaJSONMessageDecoder",
+          "realtime.segment.flush.threshold.rows": "20000",
+          "realtime.segment.flush.threshold.time": "15m"
+        }
+      ]
+    }
+  },
+  "metadata": {}
+}
